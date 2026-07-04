@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Post an Event &mdash; Live On Campus</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="logo">Live On Campus</a>
+  <nav class="nav-links">
+    <a href="/">Browse</a>
+  </nav>
+  <a href="/" class="btn-pill outline">View Feed</a>
+</header>
+
+<div class="admin-wrap">
+  <h1>Post an Event</h1>
+  <p class="sub">Add your event to the campus-wide feed. It'll show up instantly for every student.</p>
+
+  <form id="eventForm">
+    <div class="form-group">
+      <label for="title">Event title</label>
+      <input type="text" id="title" required maxlength="120" placeholder="e.g. Free Pizza Study Night" />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" rows="3" maxlength="1000" placeholder="What's happening, who it's for, why students should come"></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" required />
+      </div>
+      <div class="form-group">
+        <label for="time">Time</label>
+        <input type="text" id="time" placeholder="e.g. 6:00 PM" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" required maxlength="200" placeholder="e.g. Main Library Atrium" />
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="campus">Campus</label>
+        <select id="campus">
+          <option value="burwood">🏫 Burwood</option>
+          <option value="waurnponds">🏫 Waurn Ponds</option>
+          <option value="waterfront">🏫 Waterfront</option>
+          <option value="warrnambool">🏫 Warrnambool</option>
+          <option value="online">💻 Online</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="duration">How long does it run?</label>
+        <select id="duration">
+          <option value="30">30 minutes</option>
+          <option value="60">1 hour</option>
+          <option value="90">1.5 hours</option>
+          <option value="120" selected>2 hours</option>
+          <option value="180">3 hours</option>
+          <option value="240">4 hours</option>
+          <option value="480">All day (8 hours)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="signupUrl">Official signup / event page link</label>
+      <input type="url" id="signupUrl" placeholder="https://&hellip;" />
+    </div>
+
+    <div class="form-group">
+      <label class="checkbox-chip" style="width:fit-content;"><input type="checkbox" id="isFree" checked /> 🆓 This event is free to attend</label>
+    </div>
+
+    <div class="form-group">
+      <label>Tags</label>
+      <div class="checkbox-grid" id="tagGrid">
+        <label class="checkbox-chip"><input type="checkbox" value="freefood" /> 🍕 Free Food</label>
+        <label class="checkbox-chip"><input type="checkbox" value="networking" /> 🤝 Networking</label>
+        <label class="checkbox-chip"><input type="checkbox" value="social" /> 🎉 Social</label>
+        <label class="checkbox-chip"><input type="checkbox" value="club" /> 🎭 Club</label>
+        <label class="checkbox-chip"><input type="checkbox" value="sebe" /> 🔬 SEBE</label>
+        <label class="checkbox-chip"><input type="checkbox" value="artsed" /> 🎨 Arts & Ed</label>
+        <label class="checkbox-chip"><input type="checkbox" value="health" /> 🩺 Health</label>
+        <label class="checkbox-chip"><input type="checkbox" value="buslaw" /> ⚖️ Bus & Law</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Icon</label>
+      <div class="icon-grid" id="iconGrid">
+        <div class="icon-swatch selected" data-icon="🎉">🎉</div>
+        <div class="icon-swatch" data-icon="💼">💼</div>
+        <div class="icon-swatch" data-icon="🎤">🎤</div>
+        <div class="icon-swatch" data-icon="🍕">🍕</div>
+        <div class="icon-swatch" data-icon="☕">☕</div>
+        <div class="icon-swatch" data-icon="📚">📚</div>
+        <div class="icon-swatch" data-icon="🎨">🎨</div>
+        <div class="icon-swatch" data-icon="🩺">🩺</div>
+        <div class="icon-swatch" data-icon="⚖️">⚖️</div>
+        <div class="icon-swatch" data-icon="🤖">🤖</div>
+        <div class="icon-swatch" data-icon="💻">💻</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Card color</label>
+      <div class="color-grid" id="colorGrid">
+        <div class="color-swatch orange selected" data-color="orange"></div>
+        <div class="color-swatch green" data-color="green"></div>
+        <div class="color-swatch blue" data-color="blue"></div>
+        <div class="color-swatch yellow" data-color="yellow"></div>
+        <div class="color-swatch purple" data-color="purple"></div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-pill blue">Post Event</button>
+  </form>
+
+  <div class="admin-list">
+    <h2>Manage existing events</h2>
+    <div id="adminEventList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

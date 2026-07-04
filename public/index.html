@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Live On Campus</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="logo">Live On Campus</a>
+  <nav class="nav-links">
+    <a href="#events">Browse</a>
+  </nav>
+  <a href="admin.html" class="btn-pill">+ Add event</a>
+</header>
+
+<div class="page-heading">
+  <h1>What's on</h1>
+  <span class="count" id="eventCount"></span>
+</div>
+
+<section class="filters-section" id="filters">
+  <div class="filter-chips" id="filterChips">
+    <button class="chip active" data-tag="all">All Events</button>
+    <button class="chip" data-group="special" data-tag="today">⚡ Today</button>
+    <button class="chip filters-toggle" id="filtersToggleBtn" type="button">
+      <span id="filtersToggleLabel">▾ Filters</span>
+      <span class="filter-badge" id="filterBadge" hidden></span>
+    </button>
+  </div>
+
+  <div class="filter-groups" id="filterGroups" hidden>
+    <div class="filter-group-label">Category</div>
+    <div class="filter-chips" id="filterChipsCategory">
+      <button class="chip" data-group="tag" data-tag="freefood">🍕 Free Food</button>
+      <button class="chip" data-group="tag" data-tag="networking">🤝 Networking</button>
+      <button class="chip" data-group="tag" data-tag="social">🎉 Social</button>
+      <button class="chip" data-group="tag" data-tag="club">🎭 Club</button>
+    </div>
+
+    <div class="filter-group-label">Faculty</div>
+    <div class="filter-chips" id="filterChipsFaculty">
+      <button class="chip" data-group="tag" data-tag="sebe">🔬 SEBE</button>
+      <button class="chip" data-group="tag" data-tag="artsed">🎨 Arts & Ed</button>
+      <button class="chip" data-group="tag" data-tag="health">🩺 Health</button>
+      <button class="chip" data-group="tag" data-tag="buslaw">⚖️ Bus & Law</button>
+    </div>
+
+    <div class="filter-group-label">Campus</div>
+    <div class="filter-chips" id="filterChipsCampus">
+      <button class="chip" data-group="campus" data-tag="burwood">🏫 Burwood</button>
+      <button class="chip" data-group="campus" data-tag="waurnponds">🏫 Waurn Ponds</button>
+      <button class="chip" data-group="campus" data-tag="waterfront">🏫 Waterfront</button>
+      <button class="chip" data-group="campus" data-tag="warrnambool">🏫 Warrnambool</button>
+      <button class="chip" data-group="campus" data-tag="online">💻 Online</button>
+    </div>
+
+    <div class="filter-group-label">Cost</div>
+    <div class="filter-chips" id="filterChipsCost">
+      <button class="chip" data-group="cost" data-tag="free">🆓 Free</button>
+      <button class="chip" data-group="cost" data-tag="paid">💵 Paid</button>
+    </div>
+  </div>
+</section>
+
+<section class="live-section" id="liveSection" style="display:none;">
+  <div class="live-heading-row">
+    <span class="live-badge"><span class="live-dot"></span>Live Now</span>
+    <span class="live-count" id="liveCount"></span>
+  </div>
+  <div class="live-grid" id="liveGrid"></div>
+</section>
+
+<section class="events-section" id="events">
+  <div id="eventsList"></div>
+</section>
+
+<footer>Live On Campus &mdash; the canonical place students check before deciding. MVP demo.</footer>
+
+<div class="toast" id="toast"></div>
+<div class="cal-overlay" id="calOverlay"></div>
+
+<script src="js/calendar.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

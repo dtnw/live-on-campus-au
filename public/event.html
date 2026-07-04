@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Event Details &mdash; Live On Campus</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="logo">Live On Campus</a>
+  <nav class="nav-links">
+    <a href="/">Browse</a>
+    <a href="admin.html">Post an Event</a>
+  </nav>
+  <a href="admin.html" class="btn-pill">+ Add event</a>
+</header>
+
+<div class="detail-wrap">
+  <a href="/" class="back-link">&larr; Back to all events</a>
+  <div id="detailContent">Loading&hellip;</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="cal-overlay" id="calOverlay"></div>
+
+<script src="js/calendar.js"></script>
+<script src="js/event.js"></script>
+</body>
+</html>
