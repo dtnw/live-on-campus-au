@@ -37,6 +37,12 @@ function isInterested(eventId) {
   return !!(currentUser && currentUser.interestedEventIds && currentUser.interestedEventIds.includes(eventId));
 }
 
+function triggerGoogleSignIn() {
+  ensureGsiInitialized(() => {
+    google.accounts.id.prompt();
+  });
+}
+
 function renderAuthArea() {
   const area = document.getElementById('authArea');
   if (!area) return;
@@ -56,10 +62,9 @@ function renderAuthArea() {
     `;
     document.getElementById('signOutBtn').addEventListener('click', signOut);
   } else {
-    area.innerHTML = '<div id="gsiButtonContainer"></div>';
-    ensureGsiInitialized(() => {
-      google.accounts.id.renderButton(document.getElementById('gsiButtonContainer'), { theme: 'outline', size: 'medium', shape: 'pill' });
-    });
+    area.innerHTML = '<button class="btn-pill" id="googleSignInBtn" type="button">👤 Sign in</button>';
+    document.getElementById('googleSignInBtn').addEventListener('click', triggerGoogleSignIn);
+    ensureGsiInitialized(() => {}); // pre-warm so the first click responds instantly
   }
 }
 

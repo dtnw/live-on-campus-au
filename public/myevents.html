@@ -9,13 +9,10 @@
 <body>
 
 <header class="site-header">
-  <a href="/" class="logo">Live On Campus</a>
-  <nav class="nav-links">
-    <a href="/">Browse</a>
-  </nav>
+  <a href="/" class="logo" title="Home"><span class="logo-icon">🏠</span>Live On Campus</a>
   <div class="header-right">
+    <a href="myevents.html" class="icon-btn active" title="My Interests">⭐</a>
     <div id="authArea"></div>
-    <a href="admin.html" class="btn-pill">+ Add event</a>
   </div>
 </header>
 
@@ -28,14 +25,17 @@
 </section>
 
 <footer class="site-footer">
-  <span class="footer-badge">🚧 In development</span>
-  <p class="footer-note">Built by a student who kept missing out on free food and cool events because the info was scattered across five different group chats. This is a work in progress &mdash; expect rough edges, and if you spot a bug or have an idea, I'd genuinely love to hear it.</p>
   <div class="footer-ctas">
     <a href="admin.html" class="btn-pill blue">+ Add an Event</a>
     <button class="btn-pill outline" id="feedbackBtn" type="button">💬 Send Feedback</button>
   </div>
-  <p class="acknowledgement">Live On Campus acknowledges the Traditional Custodians of the lands on which our campuses stand &mdash; the Wurundjeri People of the Kulin Nation (Burwood), the Wadawurrung People (Waurn Ponds), and the Eastern Maar People (Warrnambool) &mdash; and pays respect to Elders past, present, and emerging.</p>
+  <details class="footer-about">
+    <summary>🚧 About this project</summary>
+    <p class="footer-note">Built by a student who kept missing out on free food and cool events because the info was scattered across five different group chats. This is a work in progress &mdash; expect rough edges, and if you spot a bug or have an idea, I'd genuinely love to hear it.</p>
+    <p class="acknowledgement">Live On Campus acknowledges the Traditional Custodians of the lands on which our campuses stand &mdash; the Wurundjeri People of the Kulin Nation (Burwood), the Wadawurrung People (Waurn Ponds), and the Eastern Maar People (Warrnambool) &mdash; and pays respect to Elders past, present, and emerging.</p>
+  </details>
   <p class="footer-copy">Live On Campus &mdash; the canonical place students check before deciding. MVP demo.</p>
+  <p class="footer-version" id="appVersion">Loading version&hellip;</p>
 </footer>
 
 <div class="toast" id="toast"></div>

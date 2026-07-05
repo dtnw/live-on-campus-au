@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { execSync } = require('child_process');
 const cookieParser = require('cookie-parser');
 const { OAuth2Client } = require('google-auth-library');
 
@@ -11,6 +12,15 @@ const EVENTS_FILE = path.join(__dirname, 'data', 'events.json');
 const USERS_FILE = path.join(__dirname, 'data', 'users.json');
 const GOOGLE_CONFIG_FILE = path.join(__dirname, 'data', 'google-config.json');
 const FEEDBACK_FILE = path.join(__dirname, 'data', 'feedback.json');
+
+const APP_VERSION = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).version;
+let APP_COMMIT = 'dev';
+try {
+  APP_COMMIT = execSync('git rev-parse --short HEAD', { cwd: __dirname }).toString().trim();
+} catch {
+  APP_COMMIT = 'dev';
+}
+const SERVER_STARTED_AT = new Date().toISOString();
 
 let GOOGLE_CLIENT_ID = '';
 try {
@@ -125,7 +135,7 @@ function withComputed(ev) {
 
 // ---------- Config ----------
 app.get('/api/config', (req, res) => {
-  res.json({ googleClientId: GOOGLE_CLIENT_ID });
+  res.json({ googleClientId: GOOGLE_CLIENT_ID, version: APP_VERSION, commit: APP_COMMIT, startedAt: SERVER_STARTED_AT });
 });
 
 // ---------- Auth ----------

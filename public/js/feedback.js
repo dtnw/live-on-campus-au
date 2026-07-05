@@ -67,3 +67,18 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   openFeedbackModal();
 });
+
+async function renderAppVersion() {
+  const el = document.getElementById('appVersion');
+  if (!el) return;
+  try {
+    const res = await fetch('/api/config');
+    const cfg = await res.json();
+    const started = new Date(cfg.startedAt).toLocaleString();
+    el.textContent = `v${cfg.version} (${cfg.commit}) · server started ${started}`;
+  } catch {
+    el.textContent = 'version unavailable';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', renderAppVersion);
