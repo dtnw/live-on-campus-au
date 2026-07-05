@@ -68,17 +68,22 @@ document.addEventListener('click', (e) => {
   openFeedbackModal();
 });
 
-async function renderAppVersion() {
-  const el = document.getElementById('appVersion');
-  if (!el) return;
+async function renderFooterMeta() {
+  const versionEl = document.getElementById('appVersion');
+  const visitsEl = document.getElementById('visitCount');
   try {
     const res = await fetch('/api/config');
     const cfg = await res.json();
-    const started = new Date(cfg.startedAt).toLocaleString();
-    el.textContent = `v${cfg.version} (${cfg.commit}) · server started ${started}`;
+    if (versionEl) {
+      const started = new Date(cfg.startedAt).toLocaleString();
+      versionEl.textContent = `v${cfg.version} (${cfg.commit}) · server started ${started}`;
+    }
+    if (visitsEl && typeof cfg.visitCount === 'number') {
+      visitsEl.textContent = `👋 ${cfg.visitCount.toLocaleString()} visit${cfg.visitCount === 1 ? '' : 's'}`;
+    }
   } catch {
-    el.textContent = 'version unavailable';
+    if (versionEl) versionEl.textContent = 'version unavailable';
   }
 }
 
-document.addEventListener('DOMContentLoaded', renderAppVersion);
+document.addEventListener('DOMContentLoaded', renderFooterMeta);

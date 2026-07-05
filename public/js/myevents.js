@@ -14,7 +14,8 @@ const CAMPUS_META = {
   waurnponds: { emoji: '🏫', label: 'WAURN PONDS' },
   waterfront: { emoji: '🏫', label: 'WATERFRONT' },
   warrnambool: { emoji: '🏫', label: 'WARRNAMBOOL' },
-  online: { emoji: '💻', label: 'ONLINE' }
+  online: { emoji: '💻', label: 'ONLINE' },
+  alllocations: { emoji: '📍', label: 'ALL LOCATIONS' }
 };
 
 function showToast(msg) {
@@ -26,16 +27,21 @@ function showToast(msg) {
 
 function escapeHtml(str) {
   const div = document.createElement('div');
-  div.textContent = str;
+  div.textContent = str == null ? '' : str;
   return div.innerHTML;
 }
 
 function tagPills(ev) {
-  const pills = ev.tags.map(t => `<span class="tag-pill ${t}">${TAG_SHORT[t] || t}</span>`).join('');
+  const pills = (ev.tags || []).map(t => `<span class="tag-pill ${t}">${TAG_SHORT[t] || t}</span>`).join('');
   const campus = CAMPUS_META[ev.campus];
   const campusPill = campus ? `<span class="tag-pill campus-pill">${campus.emoji} ${campus.label}</span>` : '';
   const costPill = ev.isFree ? '<span class="tag-pill cost-free">🆓 FREE</span>' : '<span class="tag-pill cost-paid">💵 PAID</span>';
   return pills + campusPill + costPill;
+}
+
+function timeRange(ev) {
+  if (!ev.time) return '';
+  return ev.endTime ? `${ev.time} – ${ev.endTime}` : ev.time;
 }
 
 function eventRow(ev) {
@@ -45,7 +51,7 @@ function eventRow(ev) {
         <span class="avatar ${ev.imageColor}">${ev.icon || '🎉'}</span>
         <div class="row-main">
           <span class="row-title">${ev.live ? '<span class="row-live-badge">LIVE</span> ' : ''}${escapeHtml(ev.title)}</span>
-          <span class="row-meta">${ev.time ? escapeHtml(ev.time) + ' · ' : ''}${escapeHtml(ev.location)}</span>
+          <span class="row-meta">${timeRange(ev) ? escapeHtml(timeRange(ev)) + ' · ' : ''}${escapeHtml(ev.location)}</span>
           <div class="row-tags">${tagPills(ev)}</div>
         </div>
       </a>
