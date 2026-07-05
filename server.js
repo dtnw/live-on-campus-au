@@ -13,6 +13,8 @@ const EVENTS_FILE = path.join(DATA_DIR, 'events.json');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const GOOGLE_CONFIG_FILE = path.join(DATA_DIR, 'google-config.json');
 const FEEDBACK_FILE = path.join(DATA_DIR, 'feedback.json');
+const STATS_FILE = path.join(DATA_DIR, 'stats.json');
+const VISITS_FILE = path.join(DATA_DIR, 'visits.json');
 const SEED_EVENTS_FILE = path.join(__dirname, 'seed-events.json');
 
 // On a fresh deploy the persistent volume mounted at data/ starts empty, which
@@ -60,6 +62,54 @@ const sessions = new Map();
 
 app.use(express.json());
 app.use(cookieParser());
+
+// Behind Railway/any reverse proxy, the real client IP is in X-Forwarded-For.
+// Trusting the proxy makes req.ip reflect the actual visitor rather than the proxy.
+app.set('trust proxy', true);
+
+// ---------- Visit tracking (counter + IP log) ----------
+// Counts one visit per browser per 30-min window (a session cookie guards it,
+// so refreshes/page-nav don't inflate it). Logs the client IP for backend review.
+const ADMIN_KEY = process.env.ADMIN_KEY || '';
+const MAX_VISIT_LOG = 2000;
+let visitCount = (readJson(STATS_FILE, { visitCount: 0 }).visitCount) || 0;
+let visitLog = readJson(VISITS_FILE, []);
+if (!Array.isArray(visitLog)) visitLog = [];
+
+let statsFlushTimer = null;
+function scheduleStatsFlush() {
+  if (statsFlushTimer) return;
+  statsFlushTimer = setTimeout(() => {
+    statsFlushTimer = null;
+    try { writeJson(STATS_FILE, { visitCount }); } catch {}
+    try { writeJson(VISITS_FILE, visitLog); } catch {}
+  }, 2000);
+}
+function flushStatsNow() {
+  try { writeJson(STATS_FILE, { visitCount }); } catch {}
+  try { writeJson(VISITS_FILE, visitLog); } catch {}
+}
+
+app.use((req, res, next) => {
+  if (req.method === 'GET') {
+    const p = req.path;
+    const isPage = p === '/' || p.endsWith('.html');
+    if (isPage && !(req.cookies && req.cookies.lv)) {
+      visitCount += 1;
+      visitLog.push({
+        ip: req.ip,
+        ua: (req.get('user-agent') || '').slice(0, 300),
+        path: p,
+        at: new Date().toISOString()
+      });
+      if (visitLog.length > MAX_VISIT_LOG) visitLog = visitLog.slice(-MAX_VISIT_LOG);
+      res.cookie('lv', '1', { maxAge: 30 * 60 * 1000, sameSite: 'lax' });
+      scheduleStatsFlush();
+    }
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 function readJson(file, fallback) {
@@ -94,7 +144,7 @@ function getCurrentUser(req) {
 }
 
 const VALID_TAGS = ['freefood', 'networking', 'social', 'club', 'sebe', 'artsed', 'health', 'buslaw'];
-const VALID_CAMPUS = ['burwood', 'waurnponds', 'waterfront', 'warrnambool', 'online'];
+const VALID_CAMPUS = ['burwood', 'waurnponds', 'waterfront', 'warrnambool', 'online', 'alllocations'];
 const VALID_COLORS = ['orange', 'green', 'blue', 'yellow', 'purple'];
 const VALID_COST = ['free', 'paid'];
 const DEFAULT_ICON = '🎉';
@@ -151,6 +201,7 @@ function withComputed(ev) {
       ...ev,
       date: now.toISOString().slice(0, 10),
       time: formatClock(now),
+      endTime: formatClock(end),
       startsAtMs: start.getTime(),
       endsAtMs: end.getTime(),
       live: true
@@ -160,12 +211,27 @@ function withComputed(ev) {
   const duration = Number.isFinite(ev.durationMinutes) ? ev.durationMinutes : 120;
   const end = new Date(start.getTime() + duration * 60000);
   const now = new Date();
-  return { ...ev, startsAtMs: start.getTime(), endsAtMs: end.getTime(), live: now >= start && now <= end };
+  const hasTime = !!(ev.time && ev.time.trim());
+  return { ...ev, startsAtMs: start.getTime(), endsAtMs: end.getTime(), endTime: hasTime ? formatClock(end) : '', live: now >= start && now <= end };
 }
 
 // ---------- Config ----------
 app.get('/api/config', (req, res) => {
-  res.json({ googleClientId: GOOGLE_CLIENT_ID, version: APP_VERSION, commit: APP_COMMIT, startedAt: SERVER_STARTED_AT });
+  res.json({ googleClientId: GOOGLE_CLIENT_ID, version: APP_VERSION, commit: APP_COMMIT, startedAt: SERVER_STARTED_AT, visitCount });
+});
+
+// ---------- Admin: view visit log with IPs ----------
+// Protected: if ADMIN_KEY env var is set, require ?key=<ADMIN_KEY>. If it's not
+// set, only allow requests from localhost (so IPs never leak publicly by default).
+app.get('/api/admin/visits', (req, res) => {
+  const key = req.query.key || req.get('x-admin-key') || '';
+  const isLocalhost = ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(req.ip);
+  if (ADMIN_KEY) {
+    if (key !== ADMIN_KEY) return res.status(403).json({ error: 'Forbidden' });
+  } else if (!isLocalhost) {
+    return res.status(403).json({ error: 'Set an ADMIN_KEY env var to view this remotely.' });
+  }
+  res.json({ visitCount, showing: Math.min(visitLog.length, 500), recent: visitLog.slice(-500).reverse() });
 });
 
 // ---------- Auth ----------
@@ -342,3 +408,6 @@ app.listen(PORT, () => {
     console.log('Google sign-in is not configured yet — add your OAuth Client ID to data/google-config.json');
   }
 });
+
+// Flush pending visit stats on shutdown (Railway sends SIGTERM on redeploy).
+['SIGTERM', 'SIGINT'].forEach(sig => process.on(sig, () => { flushStatsNow(); process.exit(0); }));

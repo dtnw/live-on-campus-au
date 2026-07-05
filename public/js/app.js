@@ -14,7 +14,8 @@ const CAMPUS_META = {
   waurnponds: { emoji: '🏫', label: 'WAURN PONDS' },
   waterfront: { emoji: '🏫', label: 'WATERFRONT' },
   warrnambool: { emoji: '🏫', label: 'WARRNAMBOOL' },
-  online: { emoji: '💻', label: 'ONLINE' }
+  online: { emoji: '💻', label: 'ONLINE' },
+  alllocations: { emoji: '📍', label: 'ALL LOCATIONS' }
 };
 
 const selectedTags = new Set();
@@ -32,7 +33,7 @@ function showToast(msg) {
 
 function escapeHtml(str) {
   const div = document.createElement('div');
-  div.textContent = str;
+  div.textContent = str == null ? '' : str;
   return div.innerHTML;
 }
 
@@ -42,7 +43,7 @@ function formatDateHeading(dateStr) {
 }
 
 function tagPills(ev) {
-  const pills = ev.tags.map(t => `<span class="tag-pill ${t}">${TAG_SHORT[t] || t}</span>`);
+  const pills = (ev.tags || []).map(t => `<span class="tag-pill ${t}">${TAG_SHORT[t] || t}</span>`);
   const campus = CAMPUS_META[ev.campus];
   if (campus) pills.push(`<span class="tag-pill campus-pill">${campus.emoji} ${campus.label}</span>`);
   pills.push(ev.isFree ? '<span class="tag-pill cost-free">🆓 FREE</span>' : '<span class="tag-pill cost-paid">💵 PAID</span>');
@@ -54,13 +55,18 @@ function interestBtn(ev) {
   return `<button class="interest-btn ${on ? 'interested-active' : ''}" data-interest-id="${ev.id}" title="Mark interested">${on ? '★' : '☆'}</button>`;
 }
 
+function timeRange(ev) {
+  if (!ev.time) return '';
+  return ev.endTime ? `${ev.time} – ${ev.endTime}` : ev.time;
+}
+
 function eventRow(ev) {
   return `
     <a class="event-row" href="event.html?id=${encodeURIComponent(ev.id)}">
       <span class="avatar ${ev.imageColor}">${ev.icon || '🎉'}</span>
       <div class="row-main">
         <span class="row-title">${escapeHtml(ev.title)}</span>
-        <span class="row-meta">${ev.time ? escapeHtml(ev.time) + ' · ' : ''}${escapeHtml(ev.location)}</span>
+        <span class="row-meta">${timeRange(ev) ? escapeHtml(timeRange(ev)) + ' · ' : ''}${escapeHtml(ev.location)}</span>
         <div class="row-tags">${tagPills(ev)}</div>
       </div>
       <div class="row-right">
@@ -77,7 +83,7 @@ function liveCard(ev) {
       <span class="avatar ${ev.imageColor}">${ev.icon || '🎉'}</span>
       <div class="row-main">
         <span class="row-title">${escapeHtml(ev.title)}</span>
-        <span class="row-meta">${ev.time ? escapeHtml(ev.time) + ' · ' : ''}${escapeHtml(ev.location)}</span>
+        <span class="row-meta">${timeRange(ev) ? escapeHtml(timeRange(ev)) + ' · ' : ''}${escapeHtml(ev.location)}</span>
         <div class="row-tags">${tagPills(ev)}</div>
       </div>
       <div class="row-right">

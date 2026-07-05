@@ -267,7 +267,7 @@
     "tags": [
       "social"
     ],
-    "campus": "",
+    "campus": "alllocations",
     "isFree": false,
     "signupUrl": "https://campus.hellorubric.com/?eid=64924",
     "imageColor": "blue",
@@ -286,7 +286,7 @@
     "tags": [
       "artsed"
     ],
-    "campus": "",
+    "campus": "alllocations",
     "isFree": true,
     "signupUrl": "https://www.deakin.edu.au/students/student-life-and-services/student-events/events/2026-events/t2-2026/create-art-competition",
     "imageColor": "yellow",
@@ -305,7 +305,7 @@
     "tags": [
       "networking"
     ],
-    "campus": "",
+    "campus": "alllocations",
     "isFree": true,
     "signupUrl": "https://www.trybooking.com/events/landing/1556515",
     "imageColor": "green",

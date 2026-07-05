@@ -14,7 +14,8 @@ const CAMPUS_LABELS = {
   waurnponds: '🏫 Waurn Ponds',
   waterfront: '🏫 Waterfront',
   warrnambool: '🏫 Warrnambool',
-  online: '💻 Online'
+  online: '💻 Online',
+  alllocations: '📍 All Locations'
 };
 
 function showToast(msg) {
@@ -26,7 +27,7 @@ function showToast(msg) {
 
 function escapeHtml(str) {
   const div = document.createElement('div');
-  div.textContent = str;
+  div.textContent = str == null ? '' : str;
   return div.innerHTML;
 }
 
@@ -98,11 +99,11 @@ function render(ev) {
         <h1>${escapeHtml(ev.title)}</h1>
         ${ev.hostedBy ? `<p class="hosted-by">Hosted by ${escapeHtml(ev.hostedBy)}</p>` : ''}
         <div class="detail-meta">
-          <span>📅 <strong>${formatDate(ev.date)}</strong>${ev.time ? ' · ' + escapeHtml(ev.time) : ''}</span>
+          <span>📅 <strong>${formatDate(ev.date)}</strong>${ev.time ? ' · ' + escapeHtml(ev.endTime ? ev.time + ' – ' + ev.endTime : ev.time) : ''}</span>
           <span>📍 <strong>${escapeHtml(ev.location)}</strong></span>
         </div>
         <div class="tag-pills">
-          ${ev.tags.map(t => `<span class="tag-pill ${t}">${TAG_LABELS[t] ? TAG_LABELS[t].replace(/^\S+\s/, '') : t}</span>`).join('')}
+          ${(ev.tags || []).map(t => `<span class="tag-pill ${t}">${TAG_LABELS[t] ? TAG_LABELS[t].replace(/^\S+\s/, '') : t}</span>`).join('')}
           ${campusLabel ? `<span class="tag-pill campus-pill">${campusLabel.toUpperCase()}</span>` : ''}
           ${ev.isFree ? '<span class="tag-pill cost-free">🆓 FREE</span>' : '<span class="tag-pill cost-paid">💵 PAID</span>'}
         </div>
