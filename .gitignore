@@ -1,0 +1,9 @@
+# Runtime data containing secrets or personal user data — never commit
+data/google-config.json
+data/users.json
+data/feedback.json
+
+# Office lock files
+~$*.xlsx
+~$*.xls
+~$*.docx

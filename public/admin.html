@@ -37,8 +37,12 @@
         <input type="date" id="date" required />
       </div>
       <div class="form-group">
-        <label for="time">Time</label>
+        <label for="time">Start time</label>
         <input type="text" id="time" placeholder="e.g. 6:00 PM" />
+      </div>
+      <div class="form-group">
+        <label for="endTime">End time</label>
+        <input type="text" id="endTime" placeholder="e.g. 8:00 PM" />
       </div>
     </div>
 
@@ -47,29 +51,20 @@
       <input type="text" id="location" required maxlength="200" placeholder="e.g. Main Library Atrium" />
     </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label for="campus">Campus</label>
-        <select id="campus">
-          <option value="burwood">🏫 Burwood</option>
-          <option value="waurnponds">🏫 Waurn Ponds</option>
-          <option value="waterfront">🏫 Waterfront</option>
-          <option value="warrnambool">🏫 Warrnambool</option>
-          <option value="online">💻 Online</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="duration">How long does it run?</label>
-        <select id="duration">
-          <option value="30">30 minutes</option>
-          <option value="60">1 hour</option>
-          <option value="90">1.5 hours</option>
-          <option value="120" selected>2 hours</option>
-          <option value="180">3 hours</option>
-          <option value="240">4 hours</option>
-          <option value="480">All day (8 hours)</option>
-        </select>
-      </div>
+    <div class="form-group">
+      <label for="hostedBy">Hosted by</label>
+      <input type="text" id="hostedBy" maxlength="120" placeholder="e.g. DUSA Advocacy" />
+    </div>
+
+    <div class="form-group">
+      <label for="campus">Campus</label>
+      <select id="campus">
+        <option value="burwood">🏫 Burwood</option>
+        <option value="waurnponds">🏫 Waurn Ponds</option>
+        <option value="waterfront">🏫 Waterfront</option>
+        <option value="warrnambool">🏫 Warrnambool</option>
+        <option value="online">💻 Online</option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -132,8 +127,19 @@
   </div>
 </div>
 
+<footer class="site-footer">
+  <span class="footer-badge">🚧 In development</span>
+  <p class="footer-note">Built by a student who kept missing out on free food and cool events because the info was scattered across five different group chats. This is a work in progress &mdash; expect rough edges, and if you spot a bug or have an idea, I'd genuinely love to hear it.</p>
+  <div class="footer-ctas">
+    <button class="btn-pill outline" id="feedbackBtn" type="button">💬 Send Feedback</button>
+  </div>
+  <p class="acknowledgement">Live On Campus acknowledges the Traditional Custodians of the lands on which our campuses stand &mdash; the Wurundjeri People of the Kulin Nation (Burwood), the Wadawurrung People (Waurn Ponds), and the Eastern Maar People (Warrnambool) &mdash; and pays respect to Elders past, present, and emerging.</p>
+  <p class="footer-copy">Live On Campus &mdash; the canonical place students check before deciding. MVP demo.</p>
+</footer>
+
 <div class="toast" id="toast"></div>
 
+<script src="js/feedback.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>

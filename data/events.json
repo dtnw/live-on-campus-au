@@ -16,7 +16,8 @@
     "imageColor": "purple",
     "icon": "💼",
     "durationMinutes": 120,
-    "createdAt": "2026-07-01T10:00:00.000Z"
+    "createdAt": "2026-07-01T10:00:00.000Z",
+    "hostedBy": "Deakin Careers"
   },
   {
     "id": "seed2",
@@ -35,7 +36,8 @@
     "imageColor": "orange",
     "icon": "🍕",
     "durationMinutes": 90,
-    "createdAt": "2026-07-01T09:00:00.000Z"
+    "createdAt": "2026-07-01T09:00:00.000Z",
+    "hostedBy": "Deakin Library"
   },
   {
     "id": "seed3",
@@ -54,7 +56,8 @@
     "imageColor": "purple",
     "icon": "💼",
     "durationMinutes": 240,
-    "createdAt": "2026-06-28T09:00:00.000Z"
+    "createdAt": "2026-06-28T09:00:00.000Z",
+    "hostedBy": "Deakin Business School"
   },
   {
     "id": "seed4",
@@ -73,7 +76,8 @@
     "imageColor": "orange",
     "icon": "☕",
     "durationMinutes": 120,
-    "createdAt": "2026-06-29T11:00:00.000Z"
+    "createdAt": "2026-06-29T11:00:00.000Z",
+    "hostedBy": "Career Centre"
   },
   {
     "id": "seed5",
@@ -92,7 +96,8 @@
     "imageColor": "purple",
     "icon": "🎤",
     "durationMinutes": 120,
-    "createdAt": "2026-06-27T14:00:00.000Z"
+    "createdAt": "2026-06-27T14:00:00.000Z",
+    "hostedBy": "Deakin Innovation Hub"
   },
   {
     "id": "seed6",
@@ -110,7 +115,8 @@
     "imageColor": "blue",
     "icon": "📚",
     "durationMinutes": 60,
-    "createdAt": "2026-06-25T08:00:00.000Z"
+    "createdAt": "2026-06-25T08:00:00.000Z",
+    "hostedBy": "Deakin Library"
   },
   {
     "id": "seed7",
@@ -128,7 +134,8 @@
     "imageColor": "blue",
     "icon": "🩺",
     "durationMinutes": 90,
-    "createdAt": "2026-06-25T08:00:00.000Z"
+    "createdAt": "2026-06-25T08:00:00.000Z",
+    "hostedBy": "Faculty of Health"
   },
   {
     "id": "seed8",
@@ -147,7 +154,29 @@
     "imageColor": "green",
     "icon": "🤖",
     "durationMinutes": 120,
-    "createdAt": "2026-06-28T14:00:00.000Z"
+    "createdAt": "2026-06-28T14:00:00.000Z",
+    "hostedBy": "Robotics Club"
+  },
+  {
+    "id": "demo-live",
+    "title": "Live Demo Event",
+    "description": "A demo event that's always \"happening now\" so you can see how the Live Now section looks and behaves. Safe to delete once you're done testing.",
+    "date": "2026-07-04",
+    "time": "12:00 PM",
+    "location": "Wherever You're Testing From",
+    "tags": [
+      "social",
+      "freefood"
+    ],
+    "campus": "burwood",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/live-demo",
+    "imageColor": "yellow",
+    "icon": "🎬",
+    "durationMinutes": 120,
+    "alwaysLive": true,
+    "createdAt": "2026-07-01T00:00:00.000Z",
+    "hostedBy": "Live On Campus Team"
   },
   {
     "id": "seed9",
@@ -165,6 +194,7 @@
     "imageColor": "yellow",
     "icon": "🎉",
     "durationMinutes": 300,
-    "createdAt": "2026-06-20T12:00:00.000Z"
+    "createdAt": "2026-06-20T12:00:00.000Z",
+    "hostedBy": "Student Union"
   }
 ]

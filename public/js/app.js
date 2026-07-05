@@ -42,11 +42,16 @@ function formatDateHeading(dateStr) {
 }
 
 function tagPills(ev) {
-  const pills = ev.tags.map(t => `<span class="tag-pill ${t}">${TAG_SHORT[t] || t}</span>`).join('');
+  const pills = ev.tags.map(t => `<span class="tag-pill ${t}">${TAG_SHORT[t] || t}</span>`);
   const campus = CAMPUS_META[ev.campus];
-  const campusPill = campus ? `<span class="tag-pill campus-pill">${campus.emoji} ${campus.label}</span>` : '';
-  const costPill = ev.isFree ? '<span class="tag-pill cost-free">🆓 FREE</span>' : '<span class="tag-pill cost-paid">💵 PAID</span>';
-  return pills + campusPill + costPill;
+  if (campus) pills.push(`<span class="tag-pill campus-pill">${campus.emoji} ${campus.label}</span>`);
+  pills.push(ev.isFree ? '<span class="tag-pill cost-free">🆓 FREE</span>' : '<span class="tag-pill cost-paid">💵 PAID</span>');
+  return pills.slice(0, 5).join('');
+}
+
+function interestBtn(ev) {
+  const on = typeof isInterested === 'function' && isInterested(ev.id);
+  return `<button class="interest-btn ${on ? 'interested-active' : ''}" data-interest-id="${ev.id}" title="Mark interested">${on ? '★' : '☆'}</button>`;
 }
 
 function eventRow(ev) {
@@ -59,6 +64,7 @@ function eventRow(ev) {
         <div class="row-tags">${tagPills(ev)}</div>
       </div>
       <div class="row-right">
+        ${interestBtn(ev)}
         <button class="cal-btn" data-cal-id="${ev.id}" title="Add to calendar">📅</button>
       </div>
     </a>
@@ -68,7 +74,6 @@ function eventRow(ev) {
 function liveCard(ev) {
   return `
     <a class="live-card" href="event.html?id=${encodeURIComponent(ev.id)}">
-      <span class="live-corner-dot"></span>
       <span class="avatar ${ev.imageColor}">${ev.icon || '🎉'}</span>
       <div class="row-main">
         <span class="row-title">${escapeHtml(ev.title)}</span>
@@ -76,10 +81,34 @@ function liveCard(ev) {
         <div class="row-tags">${tagPills(ev)}</div>
       </div>
       <div class="row-right">
+        ${interestBtn(ev)}
         <button class="cal-btn" data-cal-id="${ev.id}" title="Add to calendar">📅</button>
       </div>
     </a>
   `;
+}
+
+function clipRowTags() {
+  document.querySelectorAll('.row-tags').forEach(container => {
+    const pills = Array.from(container.querySelectorAll('.tag-pill'));
+    pills.forEach(p => { p.style.display = ''; });
+    const containerRect = container.getBoundingClientRect();
+    pills.forEach(p => {
+      if (p.getBoundingClientRect().right > containerRect.right + 1) {
+        p.style.display = 'none';
+      }
+    });
+  });
+}
+
+let clipResizeTimer = null;
+function scheduleClipRowTags() {
+  clearTimeout(clipResizeTimer);
+  clipResizeTimer = setTimeout(clipRowTags, 100);
+}
+window.addEventListener('resize', scheduleClipRowTags);
+if (window.ResizeObserver) {
+  new ResizeObserver(scheduleClipRowTags).observe(document.body);
 }
 
 function renderLive(events) {
@@ -94,6 +123,7 @@ function renderLive(events) {
   section.style.display = 'block';
   count.textContent = `${liveEvents.length} live`;
   grid.innerHTML = liveEvents.map(liveCard).join('');
+  clipRowTags();
 }
 
 function applyFilters(events) {
@@ -132,24 +162,34 @@ function renderGrouped(events) {
       </div>
     `;
   }).join('');
+  clipRowTags();
 }
 
 function updateEventCount(filtered, total) {
   document.getElementById('eventCount').textContent = `${filtered} of ${total}`;
 }
 
-function updateFilterBadge() {
-  const badge = document.getElementById('filterBadge');
-  const n = selectedTags.size + selectedCampus.size + selectedCost.size;
+const CATEGORY_TAGS = ['freefood', 'networking', 'social', 'club'];
+const FACULTY_TAGS = ['sebe', 'artsed', 'health', 'buslaw'];
+
+function setBadge(id, n) {
+  const badge = document.getElementById(id);
   badge.textContent = n;
   badge.hidden = n === 0;
+}
+
+function updateFilterBadges() {
+  setBadge('badgeCategory', CATEGORY_TAGS.filter(t => selectedTags.has(t)).length);
+  setBadge('badgeFaculty', FACULTY_TAGS.filter(t => selectedTags.has(t)).length);
+  setBadge('badgeCampus', selectedCampus.size);
+  setBadge('badgeCost', selectedCost.size);
 }
 
 function refresh() {
   const filtered = applyFilters(allEvents);
   renderGrouped(filtered);
   updateEventCount(filtered.length, allEvents.length);
-  updateFilterBadge();
+  updateFilterBadges();
 }
 
 async function loadEvents() {
@@ -165,15 +205,67 @@ async function loadEvents() {
   }
 }
 
-document.getElementById('filtersToggleBtn').addEventListener('click', () => {
-  const groups = document.getElementById('filterGroups');
-  groups.hidden = !groups.hidden;
-  document.getElementById('filtersToggleLabel').textContent = groups.hidden ? '▾ Filters' : '▴ Filters';
-});
+function closeAllDropdowns(except) {
+  document.querySelectorAll('.dropdown-panel').forEach(p => {
+    if (p !== except) p.hidden = true;
+  });
+}
 
-document.getElementById('filters').addEventListener('click', (e) => {
+function updateAllEventsActive() {
+  const allChip = document.querySelector('.chip[data-tag="all"]');
+  const nothingSelected = !todayActive && !selectedTags.size && !selectedCampus.size && !selectedCost.size;
+  allChip.classList.toggle('active', nothingSelected);
+}
+
+let saveFiltersTimer = null;
+function scheduleSaveFilters() {
+  if (!currentUser) return;
+  clearTimeout(saveFiltersTimer);
+  saveFiltersTimer = setTimeout(() => {
+    fetch('/api/users/me/filters', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tags: Array.from(selectedTags),
+        campus: Array.from(selectedCampus),
+        cost: Array.from(selectedCost),
+        today: todayActive
+      })
+    }).catch(() => {});
+  }, 400);
+}
+
+function applySavedFilters(filters) {
+  selectedTags.clear();
+  (filters.tags || []).forEach(t => selectedTags.add(t));
+  selectedCampus.clear();
+  (filters.campus || []).forEach(c => selectedCampus.add(c));
+  selectedCost.clear();
+  (filters.cost || []).forEach(c => selectedCost.add(c));
+  todayActive = !!filters.today;
+
+  document.querySelectorAll('.dropdown-panel input[type="checkbox"]').forEach(cb => {
+    const group = cb.dataset.group;
+    const set = group === 'campus' ? selectedCampus : group === 'cost' ? selectedCost : selectedTags;
+    cb.checked = set.has(cb.value);
+  });
+  document.querySelector('.chip[data-tag="today"]').classList.toggle('active', todayActive);
+  updateAllEventsActive();
+}
+
+document.getElementById('filterChips').addEventListener('click', (e) => {
+  const dropdownBtn = e.target.closest('.dropdown-btn');
+  if (dropdownBtn) {
+    e.stopPropagation();
+    const panel = document.getElementById('panel' + dropdownBtn.dataset.dropdown);
+    const wasOpen = !panel.hidden;
+    closeAllDropdowns();
+    panel.hidden = wasOpen;
+    return;
+  }
+
   const chip = e.target.closest('.chip');
-  if (!chip || chip.id === 'filtersToggleBtn') return;
+  if (!chip) return;
   const group = chip.dataset.group;
   const tag = chip.dataset.tag;
 
@@ -182,28 +274,32 @@ document.getElementById('filters').addEventListener('click', (e) => {
     selectedCampus.clear();
     selectedCost.clear();
     todayActive = false;
+    document.querySelectorAll('.dropdown-panel input[type="checkbox"]').forEach(cb => { cb.checked = false; });
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
-  } else {
-    document.querySelector('.chip[data-tag="all"]').classList.remove('active');
-    if (group === 'special') {
-      todayActive = !todayActive;
-      chip.classList.toggle('active', todayActive);
-    } else {
-      const set = group === 'campus' ? selectedCampus : group === 'cost' ? selectedCost : selectedTags;
-      if (set.has(tag)) {
-        set.delete(tag);
-        chip.classList.remove('active');
-      } else {
-        set.add(tag);
-        chip.classList.add('active');
-      }
-    }
-    if (!todayActive && !selectedTags.size && !selectedCampus.size && !selectedCost.size) {
-      document.querySelector('.chip[data-tag="all"]').classList.add('active');
-    }
+  } else if (group === 'special') {
+    todayActive = !todayActive;
+    chip.classList.toggle('active', todayActive);
+    updateAllEventsActive();
   }
   refresh();
+  scheduleSaveFilters();
+});
+
+document.getElementById('filterChips').addEventListener('change', (e) => {
+  const input = e.target.closest('.dropdown-panel input[type="checkbox"]');
+  if (!input) return;
+  const group = input.dataset.group;
+  const set = group === 'campus' ? selectedCampus : group === 'cost' ? selectedCost : selectedTags;
+  if (input.checked) set.add(input.value);
+  else set.delete(input.value);
+  updateAllEventsActive();
+  refresh();
+  scheduleSaveFilters();
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.filter-dropdown')) closeAllDropdowns();
 });
 
 document.addEventListener('click', (e) => {
@@ -214,5 +310,37 @@ document.addEventListener('click', (e) => {
   const ev = allEvents.find(x => x.id === btn.dataset.calId);
   if (ev) openCalendarModal(ev);
 });
+
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('.interest-btn');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  if (!currentUser) {
+    showToast('Sign in with Google to save interested events to your profile.');
+    return;
+  }
+  try {
+    const res = await fetch(`/api/events/${encodeURIComponent(btn.dataset.interestId)}/interested`, { method: 'POST' });
+    const data = await res.json();
+    currentUser.interestedEventIds = data.interestedEventIds;
+    btn.textContent = data.interested ? '★' : '☆';
+    btn.classList.toggle('interested-active', data.interested);
+  } catch {
+    showToast('Something went wrong, try again.');
+  }
+});
+
+function onAuthUpdate() {
+  if (currentUser && currentUser.savedFilters) {
+    applySavedFilters(currentUser.savedFilters);
+  } else if (!currentUser) {
+    applySavedFilters({ tags: [], campus: [], cost: [], today: false });
+  }
+  renderLive(allEvents);
+  refresh();
+}
+window.addEventListener('authready', onAuthUpdate);
+window.addEventListener('authchanged', onAuthUpdate);
 
 loadEvents();
