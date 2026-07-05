@@ -1,0 +1,200 @@
+[
+  {
+    "id": "seed1",
+    "title": "T1 Careers Mixer",
+    "description": "Meet recruiters, grab free food, and network with employers hiring this trimester.",
+    "date": "2026-07-04",
+    "time": "7:00 PM",
+    "location": "Deakin Careers",
+    "tags": [
+      "networking",
+      "freefood"
+    ],
+    "campus": "burwood",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/t1-careers-mixer",
+    "imageColor": "purple",
+    "icon": "💼",
+    "durationMinutes": 120,
+    "createdAt": "2026-07-01T10:00:00.000Z",
+    "hostedBy": "Deakin Careers"
+  },
+  {
+    "id": "seed2",
+    "title": "Free Pizza Study Night",
+    "description": "Take a break from finals prep. Free pizza, board games, and quiet study zones in the library atrium.",
+    "date": "2026-07-04",
+    "time": "3:00 PM",
+    "location": "Main Library Atrium",
+    "tags": [
+      "freefood",
+      "social"
+    ],
+    "campus": "burwood",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/free-pizza-study-night",
+    "imageColor": "orange",
+    "icon": "🍕",
+    "durationMinutes": 90,
+    "createdAt": "2026-07-01T09:00:00.000Z",
+    "hostedBy": "Deakin Library"
+  },
+  {
+    "id": "seed3",
+    "title": "Business Faculty Career Fair",
+    "description": "Meet recruiters from 30+ companies. Bring your resume and dress business casual.",
+    "date": "2026-07-04",
+    "time": "10:00 AM",
+    "location": "Commerce Building, Hall A",
+    "tags": [
+      "networking",
+      "buslaw"
+    ],
+    "campus": "burwood",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/business-career-fair",
+    "imageColor": "purple",
+    "icon": "💼",
+    "durationMinutes": 240,
+    "createdAt": "2026-06-28T09:00:00.000Z",
+    "hostedBy": "Deakin Business School"
+  },
+  {
+    "id": "seed4",
+    "title": "Free Coffee & Resume Reviews",
+    "description": "Drop by the career centre pop-up for free coffee and a 10-minute resume review with career advisors.",
+    "date": "2026-07-05",
+    "time": "9:00 AM",
+    "location": "Career Centre Lobby",
+    "tags": [
+      "networking",
+      "freefood"
+    ],
+    "campus": "burwood",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/coffee-resume-reviews",
+    "imageColor": "orange",
+    "icon": "☕",
+    "durationMinutes": 120,
+    "createdAt": "2026-06-29T11:00:00.000Z",
+    "hostedBy": "Career Centre"
+  },
+  {
+    "id": "seed5",
+    "title": "InspoFest Pitch Day with Founders",
+    "description": "Watch student startups pitch to a panel of local founders and investors.",
+    "date": "2026-07-06",
+    "time": "5:00 PM",
+    "location": "HEX",
+    "tags": [
+      "networking",
+      "sebe"
+    ],
+    "campus": "waurnponds",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/inspofest-pitch-day",
+    "imageColor": "purple",
+    "icon": "🎤",
+    "durationMinutes": 120,
+    "createdAt": "2026-06-27T14:00:00.000Z",
+    "hostedBy": "Deakin Innovation Hub"
+  },
+  {
+    "id": "seed6",
+    "title": "Advanced Literature Search Workshop",
+    "description": "Learn how to use the library's research databases for your thesis or capstone project.",
+    "date": "2026-07-08",
+    "time": "10:00 AM",
+    "location": "Online via Zoom",
+    "tags": [
+      "artsed"
+    ],
+    "campus": "online",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/literature-search-workshop",
+    "imageColor": "blue",
+    "icon": "📚",
+    "durationMinutes": 60,
+    "createdAt": "2026-06-25T08:00:00.000Z",
+    "hostedBy": "Deakin Library"
+  },
+  {
+    "id": "seed7",
+    "title": "Health Sciences Faculty Info Session",
+    "description": "Learn about research opportunities, clinical placements, and upcoming faculty deadlines.",
+    "date": "2026-07-08",
+    "time": "1:00 PM",
+    "location": "Health Sciences Building, Room 210",
+    "tags": [
+      "health"
+    ],
+    "campus": "waterfront",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/health-sciences-info-session",
+    "imageColor": "blue",
+    "icon": "🩺",
+    "durationMinutes": 90,
+    "createdAt": "2026-06-25T08:00:00.000Z",
+    "hostedBy": "Faculty of Health"
+  },
+  {
+    "id": "seed8",
+    "title": "Robotics Club Weekly Build Night",
+    "description": "Work on the competition bot with the team. All skill levels welcome, no experience required.",
+    "date": "2026-07-09",
+    "time": "5:30 PM",
+    "location": "Engineering Workshop 2",
+    "tags": [
+      "club",
+      "social"
+    ],
+    "campus": "waurnponds",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/robotics-club-build-night",
+    "imageColor": "green",
+    "icon": "🤖",
+    "durationMinutes": 120,
+    "createdAt": "2026-06-28T14:00:00.000Z",
+    "hostedBy": "Robotics Club"
+  },
+  {
+    "id": "demo-live",
+    "title": "Live Demo Event",
+    "description": "A demo event that's always \"happening now\" so you can see how the Live Now section looks and behaves. Safe to delete once you're done testing.",
+    "date": "2026-07-04",
+    "time": "12:00 PM",
+    "location": "Wherever You're Testing From",
+    "tags": [
+      "social",
+      "freefood"
+    ],
+    "campus": "burwood",
+    "isFree": true,
+    "signupUrl": "https://example.com/events/live-demo",
+    "imageColor": "yellow",
+    "icon": "🎬",
+    "durationMinutes": 120,
+    "alwaysLive": true,
+    "createdAt": "2026-07-01T00:00:00.000Z",
+    "hostedBy": "Live On Campus Team"
+  },
+  {
+    "id": "seed9",
+    "title": "Spring Formal - Tickets on Sale",
+    "description": "This year's theme is Neon Nights. Tickets include dinner, dancing, and a photo booth.",
+    "date": "2026-07-10",
+    "time": "7:00 PM",
+    "location": "Student Union Ballroom",
+    "tags": [
+      "social"
+    ],
+    "campus": "burwood",
+    "isFree": false,
+    "signupUrl": "https://example.com/events/spring-formal-tickets",
+    "imageColor": "yellow",
+    "icon": "🎉",
+    "durationMinutes": 300,
+    "createdAt": "2026-06-20T12:00:00.000Z",
+    "hostedBy": "Student Union"
+  }
+]

@@ -8,10 +8,30 @@ const { OAuth2Client } = require('google-auth-library');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const EVENTS_FILE = path.join(__dirname, 'data', 'events.json');
-const USERS_FILE = path.join(__dirname, 'data', 'users.json');
-const GOOGLE_CONFIG_FILE = path.join(__dirname, 'data', 'google-config.json');
-const FEEDBACK_FILE = path.join(__dirname, 'data', 'feedback.json');
+const DATA_DIR = path.join(__dirname, 'data');
+const EVENTS_FILE = path.join(DATA_DIR, 'events.json');
+const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const GOOGLE_CONFIG_FILE = path.join(DATA_DIR, 'google-config.json');
+const FEEDBACK_FILE = path.join(DATA_DIR, 'feedback.json');
+const SEED_EVENTS_FILE = path.join(__dirname, 'seed-events.json');
+
+// On a fresh deploy the persistent volume mounted at data/ starts empty, which
+// shadows the committed events.json. Seed it once from seed-events.json (which
+// lives in the image, outside the volume) so the feed isn't blank on first boot.
+function bootstrapDataDir() {
+  try {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  } catch {}
+  if (!fs.existsSync(EVENTS_FILE) && fs.existsSync(SEED_EVENTS_FILE)) {
+    try {
+      fs.copyFileSync(SEED_EVENTS_FILE, EVENTS_FILE);
+      console.log('Seeded data/events.json from seed-events.json (first boot)');
+    } catch (err) {
+      console.error('Failed to seed events.json:', err.message);
+    }
+  }
+}
+bootstrapDataDir();
 
 const APP_VERSION = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).version;
 let APP_COMMIT = 'dev';
@@ -50,8 +70,13 @@ function readJson(file, fallback) {
   }
 }
 
+// Atomic write: serialize to a temp file, then rename over the target. rename()
+// is atomic on the same filesystem, so a crash mid-write can never leave a
+// truncated/corrupt JSON file — readers see either the old file or the new one.
 function writeJson(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
+  const tmp = `${file}.tmp.${process.pid}.${Date.now()}`;
+  fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+  fs.renameSync(tmp, file);
 }
 
 function readEvents() { return readJson(EVENTS_FILE, []); }
