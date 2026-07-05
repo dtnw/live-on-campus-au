@@ -1,7 +1,7 @@
 [
   {
     "id": "seed1",
-    "title": "T1 Careers Mixer",
+    "title": "[DEMO] T1 Careers Mixer",
     "description": "Meet recruiters, grab free food, and network with employers hiring this trimester.",
     "date": "2026-07-04",
     "time": "7:00 PM",
@@ -21,7 +21,7 @@
   },
   {
     "id": "seed2",
-    "title": "Free Pizza Study Night",
+    "title": "[DEMO] Free Pizza Study Night",
     "description": "Take a break from finals prep. Free pizza, board games, and quiet study zones in the library atrium.",
     "date": "2026-07-04",
     "time": "3:00 PM",
@@ -41,7 +41,7 @@
   },
   {
     "id": "seed3",
-    "title": "Business Faculty Career Fair",
+    "title": "[DEMO] Business Faculty Career Fair",
     "description": "Meet recruiters from 30+ companies. Bring your resume and dress business casual.",
     "date": "2026-07-04",
     "time": "10:00 AM",
@@ -61,7 +61,7 @@
   },
   {
     "id": "seed4",
-    "title": "Free Coffee & Resume Reviews",
+    "title": "[DEMO] Free Coffee & Resume Reviews",
     "description": "Drop by the career centre pop-up for free coffee and a 10-minute resume review with career advisors.",
     "date": "2026-07-05",
     "time": "9:00 AM",
@@ -81,7 +81,7 @@
   },
   {
     "id": "seed5",
-    "title": "InspoFest Pitch Day with Founders",
+    "title": "[DEMO] InspoFest Pitch Day with Founders",
     "description": "Watch student startups pitch to a panel of local founders and investors.",
     "date": "2026-07-06",
     "time": "5:00 PM",
@@ -101,7 +101,7 @@
   },
   {
     "id": "seed6",
-    "title": "Advanced Literature Search Workshop",
+    "title": "[DEMO] Advanced Literature Search Workshop",
     "description": "Learn how to use the library's research databases for your thesis or capstone project.",
     "date": "2026-07-08",
     "time": "10:00 AM",
@@ -120,7 +120,7 @@
   },
   {
     "id": "seed7",
-    "title": "Health Sciences Faculty Info Session",
+    "title": "[DEMO] Health Sciences Faculty Info Session",
     "description": "Learn about research opportunities, clinical placements, and upcoming faculty deadlines.",
     "date": "2026-07-08",
     "time": "1:00 PM",
@@ -139,7 +139,7 @@
   },
   {
     "id": "seed8",
-    "title": "Robotics Club Weekly Build Night",
+    "title": "[DEMO] Robotics Club Weekly Build Night",
     "description": "Work on the competition bot with the team. All skill levels welcome, no experience required.",
     "date": "2026-07-09",
     "time": "5:30 PM",
@@ -159,7 +159,7 @@
   },
   {
     "id": "demo-live",
-    "title": "Live Demo Event",
+    "title": "[DEMO] Live Demo Event",
     "description": "A demo event that's always \"happening now\" so you can see how the Live Now section looks and behaves. Safe to delete once you're done testing.",
     "date": "2026-07-04",
     "time": "12:00 PM",
@@ -180,7 +180,7 @@
   },
   {
     "id": "seed9",
-    "title": "Spring Formal - Tickets on Sale",
+    "title": "[DEMO] Spring Formal - Tickets on Sale",
     "description": "This year's theme is Neon Nights. Tickets include dinner, dancing, and a photo booth.",
     "date": "2026-07-10",
     "time": "7:00 PM",
@@ -196,5 +196,121 @@
     "durationMinutes": 300,
     "createdAt": "2026-06-20T12:00:00.000Z",
     "hostedBy": "Student Union"
+  },
+  {
+    "id": "real-market-day",
+    "title": "Market Day (Burwood)",
+    "description": "FREE Lunch, Giveaways and Fun! Join us for an afternoon of connection, community, and campus fun at Burwood. Explore the wide range of student clubs on offer, meet new people, and discover opportunities to make the most of your university experience. There'll be free lunch, art activations, plenty of giveaways as well as the chance to meet and mingle with other students. Whether you're looking to make friends, join a DUSA Club, or try something different – this is an event you won't want to miss!",
+    "date": "2026-07-06",
+    "time": "11:30 AM",
+    "location": "Building HB Sports Hall, Level 2",
+    "hostedBy": "DUSA",
+    "tags": [
+      "freefood",
+      "club"
+    ],
+    "campus": "burwood",
+    "isFree": true,
+    "signupUrl": "https://www.dusa.org.au/events/t2ofest26/market_bw1",
+    "imageColor": "orange",
+    "icon": "🎪",
+    "durationMinutes": 180,
+    "createdAt": "2026-07-05T00:00:00.000Z"
+  },
+  {
+    "id": "real-wii-sports",
+    "title": "Wii Sports Competition (Warrnambool)",
+    "description": "Come and join the fun! Play against staff and students for bragging rights. Free pizza too (first in, best dressed). Walk-in event, but bring your friends along!",
+    "date": "2026-07-25",
+    "time": "6:00 PM",
+    "location": "Deakin Active Warrnambool",
+    "hostedBy": "DeakinACTIVE",
+    "tags": [
+      "freefood",
+      "social"
+    ],
+    "campus": "warrnambool",
+    "isFree": true,
+    "signupUrl": "https://deakinactive.com.au/july-updates/",
+    "imageColor": "green",
+    "icon": "🎮",
+    "durationMinutes": 90,
+    "createdAt": "2026-07-05T00:00:00.000Z"
+  },
+  {
+    "id": "real-employer-showcase",
+    "title": "Employer Showcase (Waurn Ponds)",
+    "description": "Join the DeakinTALENT Employer Showcase to meet graduate employers, discover what they value in candidates, sharpen your networking skills, and uncover exciting career opportunities.",
+    "date": "2026-07-22",
+    "time": "10:30 AM",
+    "location": "Market Hall, JB1.103",
+    "hostedBy": "DeakinTALENT",
+    "tags": [
+      "networking"
+    ],
+    "campus": "waurnponds",
+    "isFree": true,
+    "signupUrl": "https://talent.deakin.edu.au/student/svc/events.html#/user/event/3536",
+    "imageColor": "purple",
+    "icon": "💼",
+    "durationMinutes": 120,
+    "createdAt": "2026-07-05T00:00:00.000Z"
+  },
+  {
+    "id": "real-enviro-ball",
+    "title": "Enviro Ball",
+    "description": "🪩 ENVIRO BALL IS BACK ✨! After a year away, our ball returns — and it's at SEA LIFE Melbourne Aquarium 🪸🌊 Tickets are live now 🎟 Join us on 6 August for an amazing night in the aquarium 🐬🐡🐠🦈🐧🐋 with food and drinks, a DJ, secret performances, and our famous raffle and charity auction (party for a good cause!) with lots of environmentally-friendly giveaways to win. Your ticket covers a 3-course meal and drinks package (alcoholic and non-alcoholic options), entry to our charity raffle and auction (100% of proceeds to three charities), a wide selection of prizes and hampers, and a best-dressed prize for our Deep Sea Soiree theme (formal dress code). Strictly 18+ (valid ID required on arrival); please drink responsibly. We can't wait to see you at the 2026 Enviro Ball! 🥂🪩",
+    "date": "2026-08-06",
+    "time": "6:00 PM",
+    "location": "SEA LIFE Melbourne Aquarium",
+    "hostedBy": "Enviro Club",
+    "tags": [
+      "social"
+    ],
+    "campus": "",
+    "isFree": false,
+    "signupUrl": "https://campus.hellorubric.com/?eid=64924",
+    "imageColor": "blue",
+    "icon": "🐠",
+    "durationMinutes": 300,
+    "createdAt": "2026-07-05T00:00:00.000Z"
+  },
+  {
+    "id": "real-belonging-art",
+    "title": "Belonging Art Competition",
+    "description": "What does belonging mean to you? Share your personal, family or community story through art. Create an original piece that creatively reflects the theme: 'A Million Stories: The Art of Belonging'. Open now until 7 July 2026.",
+    "date": "2026-07-07",
+    "time": "9:00 AM",
+    "location": "All campuses",
+    "hostedBy": "Deakin CREATE",
+    "tags": [
+      "artsed"
+    ],
+    "campus": "",
+    "isFree": true,
+    "signupUrl": "https://www.deakin.edu.au/students/student-life-and-services/student-events/events/2026-events/t2-2026/create-art-competition",
+    "imageColor": "yellow",
+    "icon": "🎨",
+    "durationMinutes": 895,
+    "createdAt": "2026-07-05T00:00:00.000Z"
+  },
+  {
+    "id": "real-auswise-walkathon",
+    "title": "AusWISE Walkathon",
+    "description": "Walk & Connect: Build Your Network, Grow Your Career, Find Your Community 🚶‍♀️💼🌏 Join AusWISE for a Walkathon bringing together Melbourne's international student and multicultural community for a morning of connection, career growth, and good company. Guided by Dr Prabodh Malhotra, it's a relaxed, open-air space to build real professional relationships, meet people who get your journey, and walk away with a stronger network and a sense of belonging. Why join? 🤝 Network with industry-minded peers · 📈 Boost your employability through genuine career conversations · 🌏 Connect with a supportive multicultural community · 🌳 Enjoy Princes Park's beautiful green spaces. Every participant gets a 🎁 goodie bag, 👕 AusWISE t-shirt and 🔥 grilled food on the day. Spaces are limited — get your tickets now!",
+    "date": "2026-08-02",
+    "time": "9:30 AM",
+    "location": "Princes Park, Carlton North VIC",
+    "hostedBy": "AusWISE",
+    "tags": [
+      "networking"
+    ],
+    "campus": "",
+    "isFree": true,
+    "signupUrl": "https://www.trybooking.com/events/landing/1556515",
+    "imageColor": "green",
+    "icon": "🚶",
+    "durationMinutes": 210,
+    "createdAt": "2026-07-05T00:00:00.000Z"
   }
 ]
