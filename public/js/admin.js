@@ -14,6 +14,26 @@ function escapeHtml(str) {
 let selectedColor = 'orange';
 let selectedIcon = '🎉';
 
+function parseTimeToMinutes(str) {
+  const m = String(str || '').trim().match(/(\d{1,2}):(\d{2})\s*([AaPp][Mm])?/);
+  if (!m) return null;
+  let hours = parseInt(m[1], 10);
+  const minutes = parseInt(m[2], 10);
+  const ampm = m[3] ? m[3].toLowerCase() : null;
+  if (ampm === 'pm' && hours < 12) hours += 12;
+  if (ampm === 'am' && hours === 12) hours = 0;
+  return hours * 60 + minutes;
+}
+
+function computeDurationMinutes(startStr, endStr) {
+  const start = parseTimeToMinutes(startStr);
+  const end = parseTimeToMinutes(endStr);
+  if (start === null || end === null) return 120;
+  let diff = end - start;
+  if (diff <= 0) diff += 24 * 60; // event runs past midnight
+  return diff;
+}
+
 document.getElementById('colorGrid').addEventListener('click', (e) => {
   const swatch = e.target.closest('.color-swatch');
   if (!swatch) return;
@@ -36,8 +56,10 @@ document.getElementById('eventForm').addEventListener('submit', async (e) => {
   const description = document.getElementById('description').value.trim();
   const date = document.getElementById('date').value;
   const time = document.getElementById('time').value.trim();
+  const endTime = document.getElementById('endTime').value.trim();
   const location = document.getElementById('location').value.trim();
-  const durationMinutes = document.getElementById('duration').value;
+  const hostedBy = document.getElementById('hostedBy').value.trim();
+  const durationMinutes = computeDurationMinutes(time, endTime);
   const campus = document.getElementById('campus').value;
   const signupUrl = document.getElementById('signupUrl').value.trim();
   const isFree = document.getElementById('isFree').checked;
@@ -52,7 +74,7 @@ document.getElementById('eventForm').addEventListener('submit', async (e) => {
     const res = await fetch('/api/events', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, description, date, time, location, tags, imageColor: selectedColor, durationMinutes, icon: selectedIcon, campus, signupUrl, isFree })
+      body: JSON.stringify({ title, description, date, time, location, hostedBy, tags, imageColor: selectedColor, durationMinutes, icon: selectedIcon, campus, signupUrl, isFree })
     });
     if (!res.ok) throw new Error('failed');
     showToast('Event posted! Students will see it on the feed.');

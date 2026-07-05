@@ -39,6 +39,36 @@ function getEventId() {
   return new URLSearchParams(window.location.search).get('id');
 }
 
+let currentEvent = null;
+
+function updateInterestedButton() {
+  const btn = document.getElementById('interestedBtn');
+  if (!btn || !currentEvent) return;
+  const on = isInterested(currentEvent.id);
+  btn.textContent = on ? '★ Interested' : '☆ Interested';
+  btn.classList.toggle('interested-active', on);
+}
+
+async function toggleInterested() {
+  if (!currentUser) {
+    showToast('Sign in with Google to save interested events to your profile.');
+    return;
+  }
+  try {
+    const res = await fetch(`/api/events/${encodeURIComponent(currentEvent.id)}/interested`, { method: 'POST' });
+    if (!res.ok) throw new Error('failed');
+    const data = await res.json();
+    currentUser.interestedEventIds = data.interestedEventIds;
+    updateInterestedButton();
+    showToast(data.interested ? 'Saved to your interested events!' : 'Removed from your interested events.');
+  } catch {
+    showToast('Something went wrong, try again.');
+  }
+}
+
+window.addEventListener('authready', updateInterestedButton);
+window.addEventListener('authchanged', updateInterestedButton);
+
 async function loadEvent() {
   const id = getEventId();
   const container = document.getElementById('detailContent');
@@ -57,6 +87,7 @@ async function loadEvent() {
 }
 
 function render(ev) {
+  currentEvent = ev;
   const container = document.getElementById('detailContent');
   const campusLabel = CAMPUS_LABELS[ev.campus] || '';
   container.innerHTML = `
@@ -65,6 +96,7 @@ function render(ev) {
       <div class="detail-body">
         ${ev.live ? '<span class="live-badge" style="margin-bottom:14px;"><span class="live-dot"></span>Live Now</span>' : ''}
         <h1>${escapeHtml(ev.title)}</h1>
+        ${ev.hostedBy ? `<p class="hosted-by">Hosted by ${escapeHtml(ev.hostedBy)}</p>` : ''}
         <div class="detail-meta">
           <span>📅 <strong>${formatDate(ev.date)}</strong>${ev.time ? ' · ' + escapeHtml(ev.time) : ''}</span>
           <span>📍 <strong>${escapeHtml(ev.location)}</strong></span>
@@ -76,16 +108,19 @@ function render(ev) {
         </div>
         <p class="detail-desc">${escapeHtml(ev.description || 'No description provided.')}</p>
         <div class="rsvp-row">
-          ${ev.signupUrl
-            ? `<a class="btn-pill" href="${escapeHtml(ev.signupUrl)}" target="_blank" rel="noopener">Learn More</a>`
-            : `<span class="btn-pill" style="opacity:.5; cursor:not-allowed;">No signup link yet</span>`}
+          <button class="btn-pill" id="interestedBtn">☆ Interested</button>
           <button class="btn-pill outline" id="calBtn">📅 Add to Calendar</button>
+          ${ev.signupUrl
+            ? `<a class="btn-pill outline" href="${escapeHtml(ev.signupUrl)}" target="_blank" rel="noopener">Learn More</a>`
+            : `<span class="btn-pill outline" style="opacity:.5; cursor:not-allowed;">No signup link yet</span>`}
         </div>
       </div>
     </div>
   `;
 
   document.getElementById('calBtn').addEventListener('click', () => openCalendarModal(ev));
+  document.getElementById('interestedBtn').addEventListener('click', toggleInterested);
+  updateInterestedButton();
 }
 
 loadEvent();

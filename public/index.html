@@ -12,8 +12,12 @@
   <a href="/" class="logo">Live On Campus</a>
   <nav class="nav-links">
     <a href="#events">Browse</a>
+    <a href="myevents.html">My Interests</a>
   </nav>
-  <a href="admin.html" class="btn-pill">+ Add event</a>
+  <div class="header-right">
+    <div id="authArea"></div>
+    <a href="admin.html" class="btn-pill">+ Add event</a>
+  </div>
 </header>
 
 <div class="page-heading">
@@ -25,42 +29,44 @@
   <div class="filter-chips" id="filterChips">
     <button class="chip active" data-tag="all">All Events</button>
     <button class="chip" data-group="special" data-tag="today">⚡ Today</button>
-    <button class="chip filters-toggle" id="filtersToggleBtn" type="button">
-      <span id="filtersToggleLabel">▾ Filters</span>
-      <span class="filter-badge" id="filterBadge" hidden></span>
-    </button>
-  </div>
 
-  <div class="filter-groups" id="filterGroups" hidden>
-    <div class="filter-group-label">Category</div>
-    <div class="filter-chips" id="filterChipsCategory">
-      <button class="chip" data-group="tag" data-tag="freefood">🍕 Free Food</button>
-      <button class="chip" data-group="tag" data-tag="networking">🤝 Networking</button>
-      <button class="chip" data-group="tag" data-tag="social">🎉 Social</button>
-      <button class="chip" data-group="tag" data-tag="club">🎭 Club</button>
+    <div class="filter-dropdown">
+      <button class="chip dropdown-btn" data-dropdown="Category" type="button">Category ▾<span class="filter-badge" id="badgeCategory" hidden></span></button>
+      <div class="dropdown-panel" id="panelCategory" hidden>
+        <label class="dropdown-option"><input type="checkbox" data-group="tag" value="freefood" /> 🍕 Free Food</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="tag" value="networking" /> 🤝 Networking</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="tag" value="social" /> 🎉 Social</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="tag" value="club" /> 🎭 Club</label>
+      </div>
     </div>
 
-    <div class="filter-group-label">Faculty</div>
-    <div class="filter-chips" id="filterChipsFaculty">
-      <button class="chip" data-group="tag" data-tag="sebe">🔬 SEBE</button>
-      <button class="chip" data-group="tag" data-tag="artsed">🎨 Arts & Ed</button>
-      <button class="chip" data-group="tag" data-tag="health">🩺 Health</button>
-      <button class="chip" data-group="tag" data-tag="buslaw">⚖️ Bus & Law</button>
+    <div class="filter-dropdown">
+      <button class="chip dropdown-btn" data-dropdown="Faculty" type="button">Faculty ▾<span class="filter-badge" id="badgeFaculty" hidden></span></button>
+      <div class="dropdown-panel" id="panelFaculty" hidden>
+        <label class="dropdown-option"><input type="checkbox" data-group="tag" value="sebe" /> 🔬 SEBE</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="tag" value="artsed" /> 🎨 Arts & Ed</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="tag" value="health" /> 🩺 Health</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="tag" value="buslaw" /> ⚖️ Bus & Law</label>
+      </div>
     </div>
 
-    <div class="filter-group-label">Campus</div>
-    <div class="filter-chips" id="filterChipsCampus">
-      <button class="chip" data-group="campus" data-tag="burwood">🏫 Burwood</button>
-      <button class="chip" data-group="campus" data-tag="waurnponds">🏫 Waurn Ponds</button>
-      <button class="chip" data-group="campus" data-tag="waterfront">🏫 Waterfront</button>
-      <button class="chip" data-group="campus" data-tag="warrnambool">🏫 Warrnambool</button>
-      <button class="chip" data-group="campus" data-tag="online">💻 Online</button>
+    <div class="filter-dropdown">
+      <button class="chip dropdown-btn" data-dropdown="Campus" type="button">Campus ▾<span class="filter-badge" id="badgeCampus" hidden></span></button>
+      <div class="dropdown-panel" id="panelCampus" hidden>
+        <label class="dropdown-option"><input type="checkbox" data-group="campus" value="burwood" /> 🏫 Burwood</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="campus" value="waurnponds" /> 🏫 Waurn Ponds</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="campus" value="waterfront" /> 🏫 Waterfront</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="campus" value="warrnambool" /> 🏫 Warrnambool</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="campus" value="online" /> 💻 Online</label>
+      </div>
     </div>
 
-    <div class="filter-group-label">Cost</div>
-    <div class="filter-chips" id="filterChipsCost">
-      <button class="chip" data-group="cost" data-tag="free">🆓 Free</button>
-      <button class="chip" data-group="cost" data-tag="paid">💵 Paid</button>
+    <div class="filter-dropdown">
+      <button class="chip dropdown-btn" data-dropdown="Cost" type="button">Cost ▾<span class="filter-badge" id="badgeCost" hidden></span></button>
+      <div class="dropdown-panel" id="panelCost" hidden>
+        <label class="dropdown-option"><input type="checkbox" data-group="cost" value="free" /> 🆓 Free</label>
+        <label class="dropdown-option"><input type="checkbox" data-group="cost" value="paid" /> 💵 Paid</label>
+      </div>
     </div>
   </div>
 </section>
@@ -77,12 +83,24 @@
   <div id="eventsList"></div>
 </section>
 
-<footer>Live On Campus &mdash; the canonical place students check before deciding. MVP demo.</footer>
+<footer class="site-footer">
+  <span class="footer-badge">🚧 In development</span>
+  <p class="footer-note">Built by a student who kept missing out on free food and cool events because the info was scattered across five different group chats. This is a work in progress &mdash; expect rough edges, and if you spot a bug or have an idea, I'd genuinely love to hear it.</p>
+  <div class="footer-ctas">
+    <a href="admin.html" class="btn-pill blue">+ Add an Event</a>
+    <button class="btn-pill outline" id="feedbackBtn" type="button">💬 Send Feedback</button>
+  </div>
+  <p class="acknowledgement">Live On Campus acknowledges the Traditional Custodians of the lands on which our campuses stand &mdash; the Wurundjeri People of the Kulin Nation (Burwood), the Wadawurrung People (Waurn Ponds), and the Eastern Maar People (Warrnambool) &mdash; and pays respect to Elders past, present, and emerging.</p>
+  <p class="footer-copy">Live On Campus &mdash; the canonical place students check before deciding. MVP demo.</p>
+</footer>
 
 <div class="toast" id="toast"></div>
 <div class="cal-overlay" id="calOverlay"></div>
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="js/auth.js"></script>
 <script src="js/calendar.js"></script>
+<script src="js/feedback.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

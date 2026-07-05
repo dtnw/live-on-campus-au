@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Interests &mdash; Live On Campus</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="logo">Live On Campus</a>
+  <nav class="nav-links">
+    <a href="/">Browse</a>
+  </nav>
+  <div class="header-right">
+    <div id="authArea"></div>
+    <a href="admin.html" class="btn-pill">+ Add event</a>
+  </div>
+</header>
+
+<div class="page-heading">
+  <h1>My Interests</h1>
+</div>
+
+<section class="events-section" id="events">
+  <div id="myEventsList"><div class="empty-state">Loading&hellip;</div></div>
+</section>
+
+<footer class="site-footer">
+  <span class="footer-badge">🚧 In development</span>
+  <p class="footer-note">Built by a student who kept missing out on free food and cool events because the info was scattered across five different group chats. This is a work in progress &mdash; expect rough edges, and if you spot a bug or have an idea, I'd genuinely love to hear it.</p>
+  <div class="footer-ctas">
+    <a href="admin.html" class="btn-pill blue">+ Add an Event</a>
+    <button class="btn-pill outline" id="feedbackBtn" type="button">💬 Send Feedback</button>
+  </div>
+  <p class="acknowledgement">Live On Campus acknowledges the Traditional Custodians of the lands on which our campuses stand &mdash; the Wurundjeri People of the Kulin Nation (Burwood), the Wadawurrung People (Waurn Ponds), and the Eastern Maar People (Warrnambool) &mdash; and pays respect to Elders past, present, and emerging.</p>
+  <p class="footer-copy">Live On Campus &mdash; the canonical place students check before deciding. MVP demo.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+<div class="cal-overlay" id="calOverlay"></div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="js/auth.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/feedback.js"></script>
+<script src="js/myevents.js"></script>
+</body>
+</html>
