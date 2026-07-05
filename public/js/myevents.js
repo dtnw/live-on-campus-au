@@ -64,13 +64,14 @@ async function loadMyEvents() {
     list.innerHTML = `
       <div class="empty-state">
         <p>Sign in with Google to see events you've marked as interested.</p>
-        <div id="signinPromptContainer" style="display:flex; justify-content:center; margin-top:14px;"></div>
+        <div style="display:flex; justify-content:center; margin-top:14px;">
+          <button class="btn-pill" id="signinPromptBtn" type="button">👤 Sign in</button>
+        </div>
       </div>
     `;
     if (googleClientId) {
-      ensureGsiInitialized(() => {
-        google.accounts.id.renderButton(document.getElementById('signinPromptContainer'), { theme: 'outline', size: 'medium', shape: 'pill' });
-      });
+      document.getElementById('signinPromptBtn').addEventListener('click', triggerGoogleSignIn);
+      ensureGsiInitialized(() => {});
     }
     return;
   }
