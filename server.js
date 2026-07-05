@@ -22,11 +22,16 @@ try {
 }
 const SERVER_STARTED_AT = new Date().toISOString();
 
-let GOOGLE_CLIENT_ID = '';
-try {
-  GOOGLE_CLIENT_ID = JSON.parse(fs.readFileSync(GOOGLE_CONFIG_FILE, 'utf8')).clientId || '';
-} catch {
-  GOOGLE_CLIENT_ID = '';
+// google-config.json is gitignored (it's per-environment, not committed), so it
+// won't exist on a fresh deploy. Prefer an env var there (Railway/Heroku/etc. style)
+// and fall back to the local file for local dev.
+let GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+if (!GOOGLE_CLIENT_ID) {
+  try {
+    GOOGLE_CLIENT_ID = JSON.parse(fs.readFileSync(GOOGLE_CONFIG_FILE, 'utf8')).clientId || '';
+  } catch {
+    GOOGLE_CLIENT_ID = '';
+  }
 }
 const oauthClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
