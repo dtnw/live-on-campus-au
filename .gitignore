@@ -3,6 +3,9 @@ data/google-config.json
 data/users.json
 data/feedback.json
 
+# Atomic-write temp files (created transiently by writeJson)
+data/*.tmp.*
+
 # Office lock files
 ~$*.xlsx
 ~$*.xls
