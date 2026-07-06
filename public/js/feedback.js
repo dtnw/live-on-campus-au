@@ -69,21 +69,15 @@ document.addEventListener('click', (e) => {
 });
 
 async function renderFooterMeta() {
-  const versionEl = document.getElementById('appVersion');
   const visitsEl = document.getElementById('visitCount');
+  if (!visitsEl) return;
   try {
     const res = await fetch('/api/config');
     const cfg = await res.json();
-    if (versionEl) {
-      const started = new Date(cfg.startedAt).toLocaleString();
-      versionEl.textContent = `v${cfg.version} (${cfg.commit}) · server started ${started}`;
-    }
-    if (visitsEl && typeof cfg.visitCount === 'number') {
+    if (typeof cfg.visitCount === 'number') {
       visitsEl.textContent = `👋 ${cfg.visitCount.toLocaleString()} visit${cfg.visitCount === 1 ? '' : 's'}`;
     }
-  } catch {
-    if (versionEl) versionEl.textContent = 'version unavailable';
-  }
+  } catch {}
 }
 
 document.addEventListener('DOMContentLoaded', renderFooterMeta);

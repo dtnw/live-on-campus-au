@@ -143,6 +143,18 @@ function getCurrentUser(req) {
   return readUsers().find(u => u.id === userId) || null;
 }
 
+// Only this Google account may add/remove events. Overridable via env var.
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'liveoncampus.au@gmail.com').toLowerCase();
+function isAdminUser(user) {
+  return !!(user && user.email && user.email.toLowerCase() === ADMIN_EMAIL);
+}
+function requireAdmin(req, res, next) {
+  if (!isAdminUser(getCurrentUser(req))) {
+    return res.status(403).json({ error: 'Only the organiser account can add or remove events.' });
+  }
+  next();
+}
+
 const VALID_TAGS = ['freefood', 'networking', 'social', 'club', 'sebe', 'artsed', 'health', 'buslaw'];
 const VALID_CAMPUS = ['burwood', 'waurnponds', 'waterfront', 'warrnambool', 'online', 'alllocations'];
 const VALID_COLORS = ['orange', 'green', 'blue', 'yellow', 'purple'];
@@ -258,7 +270,7 @@ app.post('/api/auth/google', async (req, res) => {
     const token = crypto.randomUUID();
     sessions.set(token, user.id);
     res.cookie('session', token, { httpOnly: true, sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000 });
-    res.json({ id: user.id, name: user.name, email: user.email, picture: user.picture, interestedEventIds: user.interestedEventIds, savedFilters: user.savedFilters });
+    res.json({ id: user.id, name: user.name, email: user.email, picture: user.picture, interestedEventIds: user.interestedEventIds, savedFilters: user.savedFilters, isAdmin: isAdminUser(user) });
   } catch (err) {
     res.status(401).json({ error: 'Invalid Google credential' });
   }
@@ -267,7 +279,7 @@ app.post('/api/auth/google', async (req, res) => {
 app.get('/api/auth/me', (req, res) => {
   const user = getCurrentUser(req);
   if (!user) return res.status(401).json({ error: 'Not signed in' });
-  res.json({ id: user.id, name: user.name, email: user.email, picture: user.picture, interestedEventIds: user.interestedEventIds, savedFilters: user.savedFilters || { ...DEFAULT_FILTERS } });
+  res.json({ id: user.id, name: user.name, email: user.email, picture: user.picture, interestedEventIds: user.interestedEventIds, savedFilters: user.savedFilters || { ...DEFAULT_FILTERS }, isAdmin: isAdminUser(user) });
 });
 
 app.post('/api/users/me/filters', (req, res) => {
@@ -315,7 +327,7 @@ app.get('/api/events/:id', (req, res) => {
 });
 
 // Admin: create event
-app.post('/api/events', (req, res) => {
+app.post('/api/events', requireAdmin, (req, res) => {
   const { title, description, date, time, location, tags, imageColor, durationMinutes, icon, campus, isFree, signupUrl, hostedBy } = req.body;
   if (!title || !date || !location) {
     return res.status(400).json({ error: 'title, date, and location are required' });
@@ -344,7 +356,7 @@ app.post('/api/events', (req, res) => {
   res.status(201).json(withComputed(newEvent));
 });
 
-app.delete('/api/events/:id', (req, res) => {
+app.delete('/api/events/:id', requireAdmin, (req, res) => {
   let events = readEvents();
   const before = events.length;
   events = events.filter(e => e.id !== req.params.id);

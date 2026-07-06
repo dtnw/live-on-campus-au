@@ -12,6 +12,7 @@
   <a href="/" class="logo" title="Home">Live On Campus</a>
   <div class="header-right">
     <a href="myevents.html" class="icon-btn" title="My Interests">☆</a>
+    <div id="authArea"></div>
     <a href="/" class="btn-pill outline">View Feed</a>
   </div>
 </header>
@@ -20,6 +21,12 @@
   <h1>Post an Event</h1>
   <p class="sub">Add your event to the campus-wide feed. It'll show up instantly for every student.</p>
 
+  <div id="adminGate" class="empty-state" hidden>
+    <p id="adminGateMsg">Sign in with the organiser account to manage events.</p>
+    <div id="adminSigninContainer" style="display:flex; justify-content:center; margin-top:14px;"></div>
+  </div>
+
+  <div id="adminContent" hidden>
   <form id="eventForm">
     <div class="form-group">
       <label for="title">Event title</label>
@@ -126,6 +133,7 @@
     <h2>Manage existing events</h2>
     <div id="adminEventList"></div>
   </div>
+  </div>
 </div>
 
 <footer class="site-footer">
@@ -139,11 +147,12 @@
   </details>
   <p class="footer-copy">Live On Campus &mdash; the canonical place students check before deciding. MVP demo.</p>
   <p class="footer-visits" id="visitCount"></p>
-  <p class="footer-version" id="appVersion">Loading version&hellip;</p>
 </footer>
 
 <div class="toast" id="toast"></div>
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="js/auth.js"></script>
 <script src="js/feedback.js"></script>
 <script src="js/admin.js"></script>
 </body>

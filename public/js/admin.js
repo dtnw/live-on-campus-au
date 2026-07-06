@@ -76,7 +76,10 @@ document.getElementById('eventForm').addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, description, date, time, location, hostedBy, tags, imageColor: selectedColor, durationMinutes, icon: selectedIcon, campus, signupUrl, isFree })
     });
-    if (!res.ok) throw new Error('failed');
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error || 'failed');
+    }
     showToast('Event posted! Students will see it on the feed.');
     e.target.reset();
     document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
@@ -86,8 +89,8 @@ document.getElementById('eventForm').addEventListener('submit', async (e) => {
     document.querySelector('.icon-swatch[data-icon="🎉"]').classList.add('selected');
     selectedIcon = '🎉';
     loadAdminList();
-  } catch {
-    showToast('Could not post event. Try again.');
+  } catch (err) {
+    showToast(err.message === 'failed' ? 'Could not post event. Try again.' : err.message);
   }
 });
 
@@ -114,9 +117,44 @@ document.getElementById('adminEventList').addEventListener('click', async (e) =>
   const row = btn.closest('.admin-event-row');
   const id = row.dataset.id;
   if (!confirm('Remove this event?')) return;
-  await fetch(`/api/events/${encodeURIComponent(id)}`, { method: 'DELETE' });
+  const res = await fetch(`/api/events/${encodeURIComponent(id)}`, { method: 'DELETE' });
+  if (!res.ok) { showToast('Could not remove event.'); return; }
   showToast('Event removed.');
   loadAdminList();
 });
 
-loadAdminList();
+// Gate the admin UI: only the organiser account may add/remove events.
+function refreshAdminGate() {
+  const content = document.getElementById('adminContent');
+  const gate = document.getElementById('adminGate');
+  const gateMsg = document.getElementById('adminGateMsg');
+  const signinContainer = document.getElementById('adminSigninContainer');
+  const isAdmin = !!(typeof currentUser !== 'undefined' && currentUser && currentUser.isAdmin);
+
+  if (isAdmin) {
+    content.hidden = false;
+    gate.hidden = true;
+    loadAdminList();
+    return;
+  }
+
+  content.hidden = true;
+  gate.hidden = false;
+  signinContainer.innerHTML = '';
+  if (typeof currentUser !== 'undefined' && currentUser) {
+    gateMsg.textContent = `Signed in as ${currentUser.email}, but only the organiser account can manage events.`;
+  } else {
+    gateMsg.textContent = 'This page is for the Live On Campus organiser. Sign in with the organiser Google account to manage events.';
+    if (typeof googleClientId !== 'undefined' && googleClientId && typeof ensureGsiInitialized === 'function') {
+      const btn = document.createElement('button');
+      btn.className = 'btn-pill';
+      btn.type = 'button';
+      btn.textContent = '👤 Sign in';
+      btn.addEventListener('click', triggerGoogleSignIn);
+      signinContainer.appendChild(btn);
+    }
+  }
+}
+
+window.addEventListener('authready', refreshAdminGate);
+window.addEventListener('authchanged', refreshAdminGate);
